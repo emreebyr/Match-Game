@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    List<GameObject> selected = new List<GameObject>();
-    public float speed = 10.0f;
-    public Vector3 pos = new Vector3(2.80f,6.55f,-1.95f);
-    public Vector3 offset = new Vector3(1,0,0);
+    public List<GameObject> selected = new List<GameObject>();
+
+
+    public Vector3 pos = new Vector3(5, 5, 5);
+    public Vector3 offset = new Vector3(1, 0, 0);
 
     private IEnumerator coroutine;
 
@@ -25,34 +26,41 @@ public class GameManager : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 Ray ray;
-                RaycastHit ratcas;
+                RaycastHit rayHit;
                 ray = Camera.main.ScreenPointToRay(touch.position);
-                LayerMask mask = LayerMask.GetMask("Destroyable");
-                if (Physics.Raycast(ray, out ratcas, Mathf.Infinity, mask))
+                LayerMask destroyableLayerMask = LayerMask.GetMask("Destroyable");
+                if (Physics.Raycast(ray, out rayHit, Mathf.Infinity, destroyableLayerMask))
                 {
-                    GameObject hitObject = ratcas.transform.gameObject;
+                    GameObject hitObject = rayHit.transform.gameObject;
 
-                    if (hitObject.CompareTag("Destroyable")&&!hitObject.GetComponent<Destroyable>().isSelected)
+                    if (hitObject.CompareTag("Destroyable") && !hitObject.GetComponent<Destroyable>().isSelected)
                     {
                         hitObject.GetComponent<Outline>().enabled = true;
                         hitObject.GetComponent<Destroyable>().isSelected = true;
                         selected.Add(hitObject);
+
+
                         if (selected.Count >= 2)
                         {
                             if (selected[0].GetComponent<Destroyable>().itemName == selected[1].GetComponent<Destroyable>().itemName)
                             {
-                                selected[0].gameObject.transform.position = Vector3.Lerp(selected[0].transform.position, pos+offset, 1)*Time.deltaTime*speed;
-                                selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position, pos-offset, 1)*Time.deltaTime*speed;
-                                
-                                  foreach (var item in selected)
-                                {
-                                    item.GetComponent<Outline>().OutlineColor = Color.green;
+                                selected[0].gameObject.transform.position = Vector3.Lerp(selected[0].transform.position, pos + offset, -10) * Time.deltaTime;
+                                selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position, -pos -offset, 10) * Time.deltaTime;
 
-                                    //coroutine = 
+                                //selected[0].gameObject.transform.position = new Vector3(2, 8, -2);
+
+                                //selected[1].gameObject.transform.position = new Vector3(2, 8, -2);
+
+                                foreach (var item in selected)
+                                {
+
+                                    item.GetComponent<Outline>().OutlineColor = Color.green;
+                                    //item.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+
                                     StartCoroutine(itemsDestroy(item));
 
                                 }
-                                
+
                                 Invoke("ClearSelected", 0.5f);
 
                             }
@@ -60,12 +68,13 @@ public class GameManager : MonoBehaviour
                             {
                                 foreach (var item in selected)
                                 {
-                                    item.GetComponent<Outline>().OutlineColor = Color.red; 
+
+                                    item.GetComponent<Outline>().OutlineColor = Color.red;
+
                                 }
                                 Invoke("ClearSelected", 0.5f);
                             }
                         }
-                        //Destroy(hitObject);
                     }
 
                 }
@@ -82,9 +91,9 @@ public class GameManager : MonoBehaviour
         foreach (var item in selected)
         {
             item.GetComponent<Outline>().enabled = false;
-            ColorUtility.TryParseHtmlString("#0BFF00",out Color defaultColor);
-            item.GetComponent<Outline>().OutlineColor = defaultColor ;
-            item.GetComponent<Destroyable>().isSelected=false;
+            ColorUtility.TryParseHtmlString("#0BFF00", out Color defaultColor);
+            item.GetComponent<Outline>().OutlineColor = defaultColor;
+            item.GetComponent<Destroyable>().isSelected = false;
         }
         selected.Clear();
     }
@@ -94,12 +103,8 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.4f);
-
-            //item.SetActive(false);
+            item.SetActive(false);
         }
     }
-
-
-
 
 }

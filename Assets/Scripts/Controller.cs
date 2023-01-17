@@ -5,14 +5,11 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 
-    public GameObject [] itemsCreater;
-    public int width,height,depth;
-    public bool starter=false;
+    public GameObject[] itemsCreater;
+    public int width, height, depth;
+    public bool starter = false;
     public GameObject UI;
 
-
-    
-    
     void Start()
     {
 
@@ -25,50 +22,48 @@ public class Controller : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 for (int z = 0; z < depth; z++)
-                    {
-                        creater(x, y, z);
-                    }
+                {
+                    creater(x, y, z);
+                }
             }
         }
     }
 
     public void creater(int x, int y, int z)
     {
-        if(starter)
+        if (starter)
         {
             GameObject newRandomObj = Random_items();
-            GameObject new_item = GameObject.Instantiate (newRandomObj,new Vector3(x,y,Random.Range(-y-5,y+5)),Quaternion.identity);
+            GameObject new_item = GameObject.Instantiate(newRandomObj, new Vector3(x, y, Random.Range(-y - 5, y + 5)), Quaternion.identity);
             new_item.GetComponent<Destroyable>().itemName = newRandomObj.name;
         }
 
     }
-    
+
     public GameObject Random_items()
     {
-        int rand = Random.Range (0,itemsCreater.Length);
+        int rand = Random.Range(0, itemsCreater.Length);
         return itemsCreater[rand];
     }
 
 
     void Update()
     {
-        
+
     }
 
     public void StartButton()
-    {   
+    {
         Destroy(UI);
-        starter=true;
-        Invoke("SpawnManager",1f);
+        starter = true;
+        Invoke("SpawnManager", 1f);
 
     }
 
     public void quitButton()
-    {   
+    {
         Application.Quit();
 
     }
-
-
 
 }
