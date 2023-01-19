@@ -25,16 +25,20 @@ public class Destroyable : MonoBehaviour
     {
         if (isSelected && collisionInfo.gameObject.GetComponent<Destroyable>().itemName == itemName)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            collisionInfo.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+            Debug.Log("saaaa");
+             collisionInfo.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+            /*gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+           
           
             transform.rotation = Quaternion.identity;
-           // item.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
 
             foreach (var item in GetComponent<GameManager>().selected)
             {
                 Debug.Log(item);
             }
+            */
 
         }
     }

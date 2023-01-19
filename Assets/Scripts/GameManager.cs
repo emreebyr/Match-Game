@@ -43,19 +43,33 @@ public class GameManager : MonoBehaviour
                         if (selected.Count >= 2)
                         {
                             if (selected[0].GetComponent<Destroyable>().itemName == selected[1].GetComponent<Destroyable>().itemName)
+
                             {
-                                selected[0].gameObject.transform.position = Vector3.Lerp(selected[0].transform.position, pos + offset, -10) * Time.deltaTime;
-                                selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position, -pos -offset, 10) * Time.deltaTime;
+                            
+                            
+                                selected[0].gameObject.transform.position = Vector3.Lerp(selected[0].transform.position,new Vector3(4,15,-4),5*Time.deltaTime);
+                                selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position,new Vector3(1,15,-4),5*Time.deltaTime);
 
-                                //selected[0].gameObject.transform.position = new Vector3(2, 8, -2);
+                                //selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position,new Vector3(1,8,-4),3f/6);
 
-                                //selected[1].gameObject.transform.position = new Vector3(2, 8, -2);
+                                //selected[1].gameObject.transform.position = Vector3.Lerp(selected[1].transform.position, -pos -offset, 10) * Time.deltaTime;
+
+                                //selected[0].gameObject.transform.position =  new Vector3(4, 8, -4);
+
+                                //selected[1].gameObject.transform.position = new Vector3(1, 8, -4);
+
+
 
                                 foreach (var item in selected)
                                 {
 
                                     item.GetComponent<Outline>().OutlineColor = Color.green;
-                                    //item.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+                                    item.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+                                    item.GetComponent<Rigidbody>().useGravity = false;
+                                    item.transform.Rotate(0,20*Time.deltaTime,5);
+                                    item.GetComponent<Rigidbody>().AddForce(Vector3.up*1f);
+
+                                    
 
                                     StartCoroutine(itemsDestroy(item));
 
@@ -102,7 +116,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(6f);
             item.SetActive(false);
         }
     }
